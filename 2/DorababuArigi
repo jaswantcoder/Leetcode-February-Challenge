@@ -1,0 +1,59 @@
+/*
+B19CS039
+Dorababu Arigi
+dorababuarigi
+*/
+class Solution {
+public:
+    queue<int> q;
+    void leveltraversal(TreeNode* root, int low, int high){
+        queue<TreeNode*> Q;
+        Q.push(root);
+        TreeNode* temp;
+        while(!Q.empty()){
+            temp=Q.front();
+            Q.pop();
+            if(low<=temp->val && temp->val<=high){
+                q.push(temp->val);
+            }
+            if(temp->left){
+                Q.push(temp->left);
+            }
+            if(temp->right){
+                Q.push(temp->right);
+            }
+        }
+    }
+    TreeNode* traverseq(TreeNode* root){
+        while(!q.empty()){
+            int a=q.front();
+            q.pop();
+            root=form(root,a); 
+        }
+        return root;
+    }
+    TreeNode* form(TreeNode* root,int a){
+        if(!root){
+            return (new TreeNode(a));
+        }
+        if(root->val<a){
+            root->right=form(root->right,a);
+            
+        }
+        if(root->val>a){
+            root->left=form(root->left,a);
+        }
+        return root;
+    }
+    TreeNode* trimBST(TreeNode* root, int low, int high) {
+        leveltraversal(root,low,high);
+         if(!q.empty()){
+            int a=q.front();
+            q.pop();
+             TreeNode* temp=new TreeNode(a);
+             return traverseq(temp); 
+        }
+        return NULL;
+      
+    }
+};
